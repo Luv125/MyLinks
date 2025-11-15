@@ -2,132 +2,106 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Links</title>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
     :root {
-        --primary: #8a63d2;
-        --radius: 18px;
-        --shadow: 0 4px 15px rgba(0,0,0,0.55);
-        --bg-night: #0f0f11;
-        --card-night: #18181b;
-        --text-night: #ffffff;
-        --bg-day: #f0ecff;
-        --card-day: #ffffff;
-        --text-day: #1e1e1e;
+        --seed: #8a63d2;
+
+        /* Material You dynamic system */
+        --primary: var(--seed);
+        --primary-container: color-mix(in srgb, var(--seed) 25%, white);
+        --on-primary: white;
+
+        --bg-light: #fdfcff;
+        --bg-dark: #121214;
+
+        --surface-light: #ffffff;
+        --surface-dark: #1a1a1c;
+
+        --text-light: #1a1a1a;
+        --text-dark: #f0f0f0;
+
+        --radius: 22px;
+        --shadow: 0 4px 10px rgba(0,0,0,0.10);
     }
 
     * {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
         -webkit-tap-highlight-color: transparent;
-        user-select: none;
     }
 
     body {
-        margin: 0;
-        padding: 0;
-        font-family: "Segoe UI", sans-serif;
-        transition: all 0.5s ease;
-        background: var(--bg-night);
-        color: var(--text-night);
+        background: var(--bg-dark);
+        color: var(--text-dark);
         min-height: 100vh;
+        padding: 25px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: 20px;
+        transition: all .3s ease;
     }
 
-    .bg-animated {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, var(--primary), #3c2e67, #121212);
-        background-size: 300% 300%;
-        animation: bgMove 11s ease infinite;
-        filter: blur(35px);
-        opacity: 0.45;
-        z-index: -1;
-    }
-
-    @keyframes bgMove {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
-    }
-
-    .top-buttons {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        display: flex;
-        gap: 10px;
-        z-index: 10;
-    }
-
-    .circle-btn {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: none;
-        background: var(--primary);
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-        box-shadow: 0 4px 18px rgba(138, 99, 210, 0.55);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .circle-btn:hover { transform: scale(1.12); }
-
-    .content-wrapper {
+    .card {
+        background: var(--surface-dark);
+        padding: 28px;
+        border-radius: var(--radius);
         width: 100%;
         max-width: 500px;
-        text-align: center;
-    }
-
-    h1 { font-size: 32px; margin-bottom: 10px; }
-    p.desc { opacity: .8; margin-bottom: 25px; }
-
-    .container {
-        width: 100%;
-        background: var(--card-night);
-        padding: 25px;
-        border-radius: var(--radius);
         box-shadow: var(--shadow);
-        transition: all 0.4s ease;
-        backdrop-filter: blur(8px);
+        transition: all .3s ease;
+        opacity: 1;
     }
 
-    .link-btn {
+    h1 {
+        font-size: 26px;
+        margin-bottom: 5px;
+        font-weight: 600;
+        transition: opacity .25s ease;
+    }
+
+    p.desc {
+        opacity: .7;
+        margin-bottom: 25px;
+        transition: opacity .25s ease;
+    }
+
+    .fade {
+        opacity: 0;
+    }
+
+    /* Links */
+    .link {
         display: flex;
         align-items: center;
         width: 100%;
-        padding: 16px;
-        margin: 12px 0;
-        background: var(--primary);
-        color: #fff;
-        text-decoration: none;
+        padding: 17px;
         border-radius: var(--radius);
-        box-shadow: 0 4px 18px rgba(138, 99, 210, .45);
+        background: var(--primary);
+        margin: 12px 0;
+        color: var(--on-primary);
+        text-decoration: none;
         font-size: 17px;
-        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+        transition: transform .15s ease, opacity .25s ease;
     }
 
-    .link-btn:hover { transform: scale(1.03); }
+    .link:active {
+        transform: scale(.97);
+    }
 
     .icon-wrapper {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.2);
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.18);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -135,122 +109,175 @@
         font-size: 20px;
     }
 
-    .youtube { color: #ff0000; }
-    .username { color: #ff6b6b; }
-    .instagram {
-        background: linear-gradient(45deg, #f09433, #e6683c,
-         #dc2743, #cc2366, #bc1888);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    /* Buttons */
+    .settings {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        display: flex;
+        gap: 10px;
     }
-    .telegram { color: #0088cc; }
+
+    .btn {
+        width: 46px;
+        height: 46px;
+        border-radius: 18px;
+        background: var(--primary-container);
+        color: var(--primary);
+        border: none;
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        transition: transform .2s ease, background .3s ease, color .3s ease;
+    }
+
+    .btn:active {
+        transform: scale(.90);
+    }
+
+    /* Toast */
+    .toast {
+        position: fixed;
+        bottom: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface-dark);
+        color: var(--text-dark);
+        padding: 14px 20px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        opacity: 0;
+        font-size: 15px;
+        transition: all .4s ease;
+    }
+
+    .toast.show {
+        bottom: 25px;
+        opacity: 1;
+    }
 </style>
 </head>
-
 <body>
 
-<div class="bg-animated"></div>
-
-<div class="top-buttons">
-    <button class="circle-btn" id="themeBtn">🌙</button>
-    <button class="circle-btn" id="langBtn">EN</button>
+<div class="settings">
+    <button id="themeBtn" class="btn"><i class="fas fa-moon"></i></button>
+    <button id="langBtn" class="btn">EN</button>
 </div>
 
-<div class="content-wrapper">
+<div class="card" id="card">
     <h1 id="title">My Links</h1>
-    <p class="desc" id="desc">Useful quick-access links crafted with a modern design.</p>
+    <p class="desc" id="desc">Made by 45c95</p>
 
-    <div class="container" id="linksContainer"></div>
+    <div id="links"></div>
 </div>
+
+<div id="toast" class="toast"></div>
 
 <script>
 const linksData = {
     en: [
-        { name: "YouTube", url: "https://www.youtube.com/@Lvvu125", icon: "fab fa-youtube youtube" },
-        { name: "Username Generator (by 45c95)", url: "https://luv125.github.io/TakeUser/", icon: "fas fa-user-cog username" },
-        { name: "Instagram", url: "https://www.instagram.com/xeon2026?igsh=MXhrMmQ4M2R5cXoyaA==", icon: "fab fa-instagram instagram" },
-        { name: "Telegram", url: "https://t.me/t45c49", icon: "fab fa-telegram telegram" }
+        { name: "YouTube", url: "https://www.youtube.com/@Lvvu125", icon: "fab fa-youtube" },
+        { name: "Username Generator", url: "https://luv125.github.io/TakeUser/", icon: "fas fa-user-cog" },
+        { name: "Instagram", url: "https://www.instagram.com/xeon2026?igsh=MXhrMmQ4M2R5cXoyaA==", icon: "fab fa-instagram" },
+        { name: "Telegram", url: "https://t.me/Sir45c95", icon: "fab fa-telegram" }
     ],
     ar: [
-        { name: "يوتيوب", url: "https://www.youtube.com/@Lvvu125", icon: "fab fa-youtube youtube" },
-        { name: "مولد يوزرات (by 45c95)", url: "https://luv125.github.io/TakeUser/", icon: "fas fa-user-cog username" },
-        { name: "إنستغرام", url: "https://www.instagram.com/xeon2026?igsh=MXhrMmQ4M2R5cXoyaA==", icon: "fab fa-instagram instagram" },
-        { name: "تيليغرام", url: "https://t.me/t45c49", icon: "fab fa-telegram telegram" }
+        { name: "يوتيوب", url: "https://www.youtube.com/@Lvvu125", icon: "fab fa-youtube" },
+        { name: "مولد يوزرات", url: "https://luv125.github.io/TakeUser/", icon: "fas fa-user-cog" },
+        { name: "إنستغرام", url: "https://www.instagram.com/xeon2026?igsh=MXhrMmQ4M2R5cXoyaA==", icon: "fab fa-instagram" },
+        { name: "تيليغرام", url: "https://t.me/Sir45c95", icon: "fab fa-telegram" }
     ]
 };
 
 const titles = {
     en: { title: "My Links", desc: "Made by 45c95" },
-    ar: { title: "روابطي", desc: "Made by 45c95" }
+    ar: { title: "روابطي", desc: "صنع بواسطة 45c95" }
 };
 
-const container = document.getElementById("linksContainer");
-const title = document.getElementById("title");
-const desc = document.getElementById("desc");
+let lang = localStorage.getItem("lang") || "en";
+let dark = localStorage.getItem("theme") !== "light";
+
+const titleEl = document.getElementById("title");
+const descEl = document.getElementById("desc");
+const linksEl = document.getElementById("links");
+const card = document.getElementById("card");
 const themeBtn = document.getElementById("themeBtn");
 const langBtn = document.getElementById("langBtn");
+const toast = document.getElementById("toast");
 
-function renderLinks(lang) {
-    container.innerHTML = "";
-    linksData[lang].forEach(link => {
-        const btn = document.createElement("a");
-        btn.className = "link-btn";
-        btn.href = link.url;
-        btn.target = "_blank";
+function showToast(text) {
+    toast.textContent = text;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2200);
+}
 
-        btn.innerHTML = `
-            <div class="icon-wrapper">
-                <i class="${link.icon}"></i>
-            </div>
-            <div class="link-text">${link.name}</div>
+function fadeElements() {
+    titleEl.classList.add("fade");
+    descEl.classList.add("fade");
+    card.classList.add("fade");
+    setTimeout(() => {
+        titleEl.classList.remove("fade");
+        descEl.classList.remove("fade");
+        card.classList.remove("fade");
+    }, 250);
+}
+
+function renderLinks() {
+    linksEl.innerHTML = "";
+    linksData[lang].forEach(l => {
+        linksEl.innerHTML += `
+            <a class="link" href="${l.url}" target="_blank">
+                <div class="icon-wrapper"><i class="${l.icon}"></i></div>
+                ${l.name}
+            </a>
         `;
-
-        container.appendChild(btn);
     });
 }
 
-let currentLang = localStorage.getItem("lang") || "en";
-let isNightMode = localStorage.getItem("theme") !== "day";
-
 function applyTheme() {
-    if (isNightMode) {
-        document.body.style.background = "var(--bg-night)";
-        document.querySelector(".container").style.background = "var(--card-night)";
-        document.body.style.color = "var(--text-night)";
-        themeBtn.innerHTML = "🌙";
+    if (dark) {
+        document.body.style.background = "var(--bg-dark)";
+        card.style.background = "var(--surface-dark)";
+        document.body.style.color = "var(--text-dark)";
+        themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
     } else {
-        document.body.style.background = "var(--bg-day)";
-        document.querySelector(".container").style.background = "var(--card-day)";
-        document.body.style.color = "var(--text-day)";
-        themeBtn.innerHTML = "☀️";
+        document.body.style.background = "var(--bg-light)";
+        card.style.background = "var(--surface-light)";
+        document.body.style.color = "var(--text-light)";
+        themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
     }
 }
 
-function initApp() {
-    renderLinks(currentLang);
-    title.innerText = titles[currentLang].title;
-    desc.innerText = titles[currentLang].desc;
-    langBtn.innerText = currentLang === "en" ? "AR" : "EN";
+langBtn.onclick = () => {
+    lang = lang === "en" ? "ar" : "en";
+    localStorage.setItem("lang", lang);
+    langBtn.textContent = lang === "en" ? "AR" : "EN";
+
+    fadeElements();
+    titleEl.textContent = titles[lang].title;
+    descEl.textContent = titles[lang].desc;
+    renderLinks();
+
+    showToast(lang === "en" ? "Language changed to English" : "تم تغيير اللغة إلى العربية");
+};
+
+themeBtn.onclick = () => {
+    dark = !dark;
+    localStorage.setItem("theme", dark ? "dark" : "light");
     applyTheme();
-}
+    showToast(dark ? "Dark mode enabled" : "Light mode enabled");
+};
 
-langBtn.addEventListener("click", () => {
-    currentLang = currentLang === "en" ? "ar" : "en";
-    localStorage.setItem("lang", currentLang);
-
-    renderLinks(currentLang);
-    title.innerText = titles[currentLang].title;
-    desc.innerText = titles[currentLang].desc;
-    langBtn.innerText = currentLang === "en" ? "AR" : "EN";
-});
-
-themeBtn.addEventListener("click", () => {
-    isNightMode = !isNightMode;
-    localStorage.setItem("theme", isNightMode ? "night" : "day");
+(function init() {
+    langBtn.textContent = lang === "en" ? "AR" : "EN";
+    titleEl.textContent = titles[lang].title;
+    descEl.textContent = titles[lang].desc;
+    renderLinks();
     applyTheme();
-});
-
-initApp();
+})();
 </script>
 
 </body>
