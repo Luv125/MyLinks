@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>My Links</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --gold:#d4af37;
+  --bg-dark:#0d0d10;
+  --bg-light:#f6f6fb;
+  --card-dark:#16161b;
+  --card-light:#ffffff;
+  --text-dark:#f2f2f2;
+  --text-light:#1b1b1b;
+  --radius:26px;
+  --shadow:0 12px 35px rgba(0,0,0,.35);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  outline:none;
+}
+
+body{
+  min-height:100vh;
+  background:var(--bg-dark);
+  color:var(--text-dark);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:24px;
+  transition:.4s ease;
+}
+
+.card{
+  width:100%;
+  max-width:520px;
+  background:var(--card-dark);
+  border-radius:var(--radius);
+  padding:34px 30px;
+  box-shadow:var(--shadow);
+}
+
+.header{
+  margin-bottom:26px;
+}
+
+h1{font-size:30px;font-weight:600}
+.desc{opacity:.65;margin-top:6px}
+
+/* Links */
+.link{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:18px 20px;
+  margin:14px 0;
+  border-radius:20px;
+  background:linear-gradient(135deg,var(--gold),#f7d774);
+  color:#000;
+  text-decoration:none;
+  font-size:17px;
+}
+
+.icon{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  background:rgba(0,0,0,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+}
+
+/* Settings */
+.settings{
+  position:fixed;
+  top:18px;
+  right:18px;
+  display:flex;
+  gap:10px;
+}
+
+.btn{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  background:var(--card-dark);
+  color:var(--gold);
+  box-shadow:var(--shadow);
+  font-size:18px;
+}
+
+/* Toast */
+.toast{
+  position:fixed;
+  bottom:-90px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--card-dark);
+  color:var(--text-dark);
+  padding:14px 24px;
+  border-radius:18px;
+  opacity:0;
+  transition:.4s ease;
+}
+
+.toast.show{bottom:26px;opacity:1}
+
+/* Modal */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+}
+
+.modal.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.modal-box{
+  background:var(--card-dark);
+  padding:26px;
+  border-radius:22px;
+  width:90%;
+  max-width:340px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.modal-box h2{
+  margin-bottom:20px;
+  font-size:20px;
+}
+
+.lang-option{
+  padding:14px;
+  margin:10px 0;
+  border-radius:16px;
+  cursor:pointer;
+  background:#222;
+  color:var(--text-dark);
+}
+
+.lang-option:hover{
+  background:linear-gradient(135deg,var(--gold),#f7d774);
+  color:#000;
+}
+
+/* Light mode */
+.light{
+  background:var(--bg-light);
+  color:var(--text-light);
+}
+
+.light .card,
+.light .btn,
+.light .toast,
+.light .modal-box{
+  background:var(--card-light);
+  color:var(--text-light);
+}
+
+.light .lang-option{background:#eee}
+</style>
+</head>
+
+<body>
+
+<div class="settings">
+  <button id="theme" class="btn">
+    <i class="fa-solid fa-moon"></i>
+  </button>
+  <button id="openLang" class="btn">
+    <i class="fa-solid fa-globe"></i>
+  </button>
+</div>
+
+<div class="card">
+  <div class="header">
+    <h1 id="title">My Links</h1>
+    <p class="desc" id="desc">Made by 45c95</p>
+  </div>
+  <div id="links"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Language Modal -->
+<div class="modal" id="langModal">
+  <div class="modal-box">
+    <h2>Choose Language</h2>
+    <div class="lang-option" onclick="setLang('en')">English</div>
+    <div class="lang-option" onclick="setLang('ar')">العربية</div>
+  </div>
+</div>
+
+<script>
+const data={
+ en:[
+  ["YouTube","https://www.youtube.com/@Lvvu125","fab fa-youtube"],
+  ["Username Generator","https://luv125.github.io/TakeUser/","fa-solid fa-user-gear"],
+  ["Instagram","https://www.instagram.com/xeon2026","fab fa-instagram"],
+  ["Telegram","https://t.me/Sir45c95","fab fa-telegram"]
+ ],
+ ar:[
+  ["يوتيوب","https://www.youtube.com/@Lvvu125","fab fa-youtube"],
+  ["مولد يوزرات","https://luv125.github.io/TakeUser/","fa-solid fa-user-gear"],
+  ["إنستغرام","https://www.instagram.com/xeon2026","fab fa-instagram"],
+  ["تيليغرام","https://t.me/Sir45c95","fab fa-telegram"]
+ ]
+}
+
+const titles={
+ en:["My Links","Made by 45c95"],
+ ar:["روابطي","صنع بواسطة 45c95"]
+}
+
+let lang=localStorage.lang||"en"
+let light=localStorage.theme==="light"
+
+const links=document.getElementById("links")
+const modal=document.getElementById("langModal")
+const toast=document.getElementById("toast")
+
+function showToast(t){
+ toast.textContent=t
+ toast.classList.add("show")
+ setTimeout(()=>toast.classList.remove("show"),2000)
+}
+
+function render(){
+ links.innerHTML=""
+ data[lang].forEach(l=>{
+  links.innerHTML+=`
+   <a class="link" href="${l[1]}" target="_blank">
+    <div class="icon"><i class="${l[2]}"></i></div>${l[0]}
+   </a>`
+ })
+ title.textContent=titles[lang][0]
+ desc.textContent=titles[lang][1]
+ document.documentElement.dir=lang==="ar"?"rtl":"ltr"
+}
+
+function setLang(l){
+ lang=l
+ localStorage.lang=l
+ modal.classList.remove("show")
+ render()
+ showToast(l==="en"?"English selected":"تم اختيار العربية")
+}
+
+theme.onclick=()=>{
+ light=!light
+ document.body.classList.toggle("light",light)
+ localStorage.theme=light?"light":"dark"
+ theme.innerHTML=light?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>'
+}
+
+openLang.onclick=()=>modal.classList.add("show")
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove("show")}
+
+document.body.classList.toggle("light",light)
+render()
+</script>
+
+</body>
+</html>
