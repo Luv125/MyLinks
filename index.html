@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Happy New Year Links</title>
+<title>Personal Links</title>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -50,7 +49,7 @@ body{
   overflow: hidden;
 }
 
-/* خلفية احتفالية */
+/* خلفية متدرجة */
 body::before{
   content:'';
   position:absolute;
@@ -129,21 +128,6 @@ body::before{
   50%{transform:translateY(-20px) scale(1.05);}
 }
 
-/* رقاقات الثلج */
-.snowflake{
-  position:absolute;
-  background:white;
-  border-radius:50%;
-  opacity:0.8;
-  filter:blur(1px);
-  animation:fall linear infinite;
-  z-index:-1;
-}
-
-@keyframes fall{
-  to{transform:translateY(100vh);}
-}
-
 /* الكارت الرئيسي */
 .card{
   width:100%;
@@ -202,7 +186,7 @@ h1{
   100%{background-position:0% 50%;}
 }
 
-.year-text{
+.username{
   font-size:24px;
   color:var(--gold);
   font-weight:600;
@@ -430,33 +414,34 @@ h1{
   color:var(--text-light);
 }
 
-/* تأثيرات السنة الجديدة */
-.firework{
+/* تأثيرات جمالية */
+.sparkle{
   position:absolute;
   width:5px;
   height:5px;
   border-radius:50%;
-  animation:explode 1s forwards;
+  background:var(--gold);
+  animation:sparkle 1.5s infinite;
   z-index:-1;
 }
 
-@keyframes explode{
-  0%{transform:scale(1); opacity:1;}
-  100%{transform:scale(20); opacity:0;}
+@keyframes sparkle{
+  0%, 100%{opacity:0; transform:scale(0);}
+  50%{opacity:1; transform:scale(1);}
 }
 
-.confetti{
+.floating-icon{
   position:absolute;
-  width:10px;
-  height:10px;
-  opacity:0;
-  animation:confetti-fall 3s linear forwards;
+  font-size:24px;
+  color:var(--gold);
+  opacity:0.3;
+  animation:float-icon 10s infinite linear;
   z-index:-1;
 }
 
-@keyframes confetti-fall{
-  0%{transform:translateY(-100px) rotate(0deg); opacity:1;}
-  100%{transform:translateY(100vh) rotate(360deg); opacity:0;}
+@keyframes float-icon{
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(-100vh) rotate(360deg);}
 }
 </style>
 </head>
@@ -482,10 +467,10 @@ h1{
 
 <div class="card">
   <div class="header">
-    <h1 id="title">Happy New Year!</h1>
-    <div class="year-text" id="year">2026</div>
-    <p class="desc" id="desc">Celebrate with my links</p>
-    <p class="desc">Made by 45c95</p>
+    <h1 id="title">45c95 Links</h1>
+    <div class="username">@45c95</div>
+    <p class="desc" id="desc">Personal links and projects</p>
+    <p class="desc">Made with <i class="fas fa-heart" style="color:#ff6b6b;"></i> by 45c95</p>
   </div>
   <div class="links-container" id="links"></div>
 </div>
@@ -518,8 +503,8 @@ const data={
 }
 
 const titles={
- en:["Happy New Year!","Celebrate with my links","Made by 45c95"],
- ar:["سنة جديدة سعيدة!","احتفل مع روابطي","صنع بواسطة 45c95"]
+ en:["45c95 Links","Personal links and projects","Made with ❤️ by 45c95"],
+ ar:["روابط 45c95","روابط ومشاريع شخصية","صنع بـ ❤️ بواسطة 45c95"]
 }
 
 let lang=localStorage.lang||"en"
@@ -528,7 +513,8 @@ let light=localStorage.theme==="light"
 const links=document.getElementById("links")
 const modal=document.getElementById("langModal")
 const toast=document.getElementById("toast")
-const yearElement=document.getElementById("year")
+const title=document.getElementById("title")
+const desc=document.getElementById("desc")
 
 function showToast(t){
  toast.textContent=t
@@ -548,10 +534,6 @@ function render(){
  title.textContent=titles[lang][0]
  desc.textContent=titles[lang][1]
  document.documentElement.dir=lang==="ar"?"rtl":"ltr"
- 
- // تحديث سنة العرض
- const currentYear = new Date().getFullYear();
- yearElement.textContent = currentYear;
 }
 
 function setLang(l){
@@ -560,93 +542,67 @@ function setLang(l){
  modal.classList.remove("show")
  render()
  showToast(l==="en"?"English selected":"تم اختيار العربية")
- createFireworks(5);
+ createSparkles(8);
 }
 
-// إنشاء تأثيرات السنة الجديدة
-function createSnowflakes(count){
+// إنشاء تأثيرات جمالية
+function createSparkles(count){
  for(let i=0;i<count;i++){
-  const snowflake=document.createElement('div')
-  snowflake.classList.add('snowflake')
-  
-  const size=Math.random()*6+2
-  snowflake.style.width=size+'px'
-  snowflake.style.height=size+'px'
-  
-  const startLeft=Math.random()*100
-  snowflake.style.left=startLeft+'vw'
-  
-  const duration=Math.random()*5+5
-  snowflake.style.animationDuration=duration+'s'
-  
-  snowflake.style.animationDelay=Math.random()*5+'s'
-  
-  document.body.appendChild(snowflake)
-  
-  // إزالة الرقاقة بعد سقوطها
-  setTimeout(()=>{
-   snowflake.remove()
-  }, duration*1000)
- }
-}
-
-function createFireworks(count){
- for(let i=0;i<count;i++){
-  const firework=document.createElement('div')
-  firework.classList.add('firework')
+  const sparkle=document.createElement('div')
+  sparkle.classList.add('sparkle')
   
   const colors=[getComputedStyle(document.documentElement).getPropertyValue('--gold'),
                 getComputedStyle(document.documentElement).getPropertyValue('--blue'),
                 getComputedStyle(document.documentElement).getPropertyValue('--red'),
                 getComputedStyle(document.documentElement).getPropertyValue('--purple')]
   
-  firework.style.background=colors[Math.floor(Math.random()*colors.length)]
-  
-  const left=Math.random()*80+10
-  const top=Math.random()*80+10
-  
-  firework.style.left=left+'vw'
-  firework.style.top=top+'vh'
-  
-  document.body.appendChild(firework)
-  
-  setTimeout(()=>{
-   firework.remove()
-  }, 1000)
- }
-}
-
-function createConfetti(count){
- for(let i=0;i<count;i++){
-  const confetti=document.createElement('div')
-  confetti.classList.add('confetti')
-  
-  const colors=[getComputedStyle(document.documentElement).getPropertyValue('--gold'),
-                getComputedStyle(document.documentElement).getPropertyValue('--blue'),
-                getComputedStyle(document.documentElement).getPropertyValue('--red'),
-                getComputedStyle(document.documentElement).getPropertyValue('--purple')]
-  
-  confetti.style.background=colors[Math.floor(Math.random()*colors.length)]
+  sparkle.style.background=colors[Math.floor(Math.random()*colors.length)]
   
   const left=Math.random()*100
-  confetti.style.left=left+'vw'
+  const top=Math.random()*100
   
-  const duration=Math.random()*2+1
-  confetti.style.animationDuration=duration+'s'
+  sparkle.style.left=left+'vw'
+  sparkle.style.top=top+'vh'
+  
+  const size=Math.random()*6+2
+  sparkle.style.width=size+'px'
+  sparkle.style.height=size+'px'
+  
+  const duration=Math.random()*1+1
+  sparkle.style.animationDuration=duration+'s'
   
   const delay=Math.random()*2
-  confetti.style.animationDelay=delay+'s'
+  sparkle.style.animationDelay=delay+'s'
   
-  const size=Math.random()*8+4
-  confetti.style.width=size+'px'
-  confetti.style.height=size/2+'px'
-  
-  document.body.appendChild(confetti)
+  document.body.appendChild(sparkle)
   
   setTimeout(()=>{
-   confetti.remove()
+   sparkle.remove()
   }, (duration+delay)*1000)
  }
+}
+
+function createFloatingIcons(){
+ const icons=['fas fa-star','fas fa-heart','fas fa-circle','fas fa-square','fas fa-diamond']
+ const icon=document.createElement('i')
+ icon.classList.add('floating-icon')
+ 
+ icon.className=icons[Math.floor(Math.random()*icons.length)]
+ 
+ const left=Math.random()*100
+ icon.style.left=left+'vw'
+ 
+ const size=Math.random()*20+10
+ icon.style.fontSize=size+'px'
+ 
+ const duration=Math.random()*15+10
+ icon.style.animationDuration=duration+'s'
+ 
+ document.body.appendChild(icon)
+ 
+ setTimeout(()=>{
+  icon.remove()
+ }, duration*1000)
 }
 
 theme.onclick=()=>{
@@ -656,51 +612,45 @@ theme.onclick=()=>{
  theme.innerHTML=light?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>'
  
  // إنشاء تأثيرات عند التبديل
- if(!light){
-  createFireworks(3);
-  createConfetti(15);
- }
+ createSparkles(5);
+ if(!light) createFloatingIcons();
 }
 
 openLang.onclick=()=>{
  modal.classList.add("show");
- createConfetti(10);
+ createSparkles(6);
 }
 
 modal.onclick=e=>{
  if(e.target===modal){
   modal.classList.remove("show")
-  createSnowflakes(10);
+  createSparkles(3);
  }
 }
 
 // تهيئة التأثيرات
 document.addEventListener('DOMContentLoaded', function(){
  render();
- createSnowflakes(30);
  
  // إنشاء تأثيرات بشكل دوري
  setInterval(() => {
-  if(Math.random() > 0.7) createFireworks(1);
-  if(Math.random() > 0.8) createConfetti(5);
- }, 3000);
+  if(Math.random() > 0.7) createSparkles(2);
+  if(Math.random() > 0.9) createFloatingIcons();
+ }, 4000);
  
  // إنشاء تأثيرات عند النقر على الروابط
  document.querySelectorAll('.link').forEach(link => {
   link.addEventListener('click', function() {
-   createConfetti(8);
+   createSparkles(4);
   });
  });
 });
 
-// إضافة تأثيرات عند التمرير
-let lastScroll = 0;
-window.addEventListener('scroll', function() {
- const currentScroll = window.pageYOffset;
- if (currentScroll <= 0) {
-  createSnowflakes(5);
+// إنشاء تأثيرات عند تحريك الماوس
+document.addEventListener('mousemove', function(e){
+ if(Math.random() > 0.97){
+  createSparkles(1);
  }
- lastScroll = currentScroll;
 });
 </script>
 
